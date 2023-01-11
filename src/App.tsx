@@ -7,8 +7,8 @@ export default function App() {
         `${new Date().getTime()}${String(Math.random()).slice(3, 9)}`;
 
     const [todos, setTodos] = useState<Todos>([
-        { id: "1", text: "Drive" },
-        { id: "2", text: "Run" },
+        { id: "1", text: "Drive", isDone: false },
+        { id: "2", text: "Run", isDone: true },
     ]);
     const [text, setText] = useState<string>("");
 
@@ -16,6 +16,7 @@ export default function App() {
         const newTodo: Todo = {
             id: UID(),
             text: text,
+            isDone: false,
         };
         const arr: Todos = [...todos];
         arr.push(newTodo);
@@ -30,6 +31,17 @@ export default function App() {
         setTodos(arr);
     };
 
+    const setIsDone = (id: string): void => {
+        const todoIndex: number = todos.findIndex((item) => item.id === id);
+        if (todos[todoIndex].isDone === false) {
+            todos[todoIndex].isDone = true;
+        } else {
+            todos[todoIndex].isDone = false;
+        }
+        const arr = [...todos];
+        setTodos(arr);
+    };
+
     return (
         <div className="App">
             <div>
@@ -38,12 +50,17 @@ export default function App() {
                 ) : (
                     <ul>
                         {todos.map((item, i) => (
-                            <li key={i}>
-                                {item.text}
-                                <button onClick={() => deleteTodo(item.id)}>
+                            <div className="li">
+                                <li onClick={() => setIsDone(item.id)} key={i}>
+                                    {item.text}
+                                </li>
+                                <button
+                                    className={item.isDone ? "done" : ""}
+                                    onClick={() => deleteTodo(item.id)}
+                                >
                                     Delete
                                 </button>
-                            </li>
+                            </div>
                         ))}
                     </ul>
                 )}
