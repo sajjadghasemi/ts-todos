@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Todo, Todos } from "./allTypes";
 import "./App.css";
 
-export default function App() {
-    const UID = () =>
+export default function App(): JSX.Element {
+    const UID = (): string =>
         `${new Date().getTime()}${String(Math.random()).slice(3, 9)}`;
 
     const [todos, setTodos] = useState<Todos>([
@@ -25,14 +25,18 @@ export default function App() {
     };
 
     const deleteTodo = (id: string): void => {
-        const todoIndex: number = todos.findIndex((item) => item.id === id);
+        const todoIndex: number = todos.findIndex(
+            (item: Todo) => item.id === id
+        );
         const arr: Todos = [...todos];
         arr.splice(todoIndex, 1);
         setTodos(arr);
     };
 
     const setIsDone = (id: string): void => {
-        const todoIndex: number = todos.findIndex((item) => item.id === id);
+        const todoIndex: number = todos.findIndex(
+            (item: Todo) => item.id === id
+        );
         if (todos[todoIndex].isDone === false) {
             todos[todoIndex].isDone = true;
         } else {
@@ -49,7 +53,7 @@ export default function App() {
                     <p>"Nothing to show!!!"</p>
                 ) : (
                     <ul>
-                        {todos.map((item, i) => (
+                        {todos.map((item: Todo, i: number) => (
                             <div className="li">
                                 <li onClick={() => setIsDone(item.id)} key={i}>
                                     {item.text}
